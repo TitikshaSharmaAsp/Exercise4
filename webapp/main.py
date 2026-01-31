@@ -35,3 +35,13 @@ def generate(body: Body):
     """
     string = base64.b64encode(os.urandom(64))[:body.length].decode('utf-8')
     return {'token': string}
+
+import hashlib
+
+class TextBody(BaseModel):
+    text: str
+
+@app.post('/checksum')
+def checksum(body: TextBody):
+    checksum_value = hashlib.md5(body.text.encode('utf-8')).hexdigest()
+    return {"checksum": checksum_value}
